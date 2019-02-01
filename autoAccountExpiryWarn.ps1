@@ -5,9 +5,8 @@ Param(
 [string] $minimumCertAgeDays = 30
 )
 
-$URI = "http://51.145.48.106:8080"
-$ProjectKey = "DBK"
-$subject = "Automation Account Certificate expiry warning"
+$URI = "input-JIRA-URI"
+$ProjectKey = "input-project-key"
 $global:username = "input-username"
 $global:jirapass = (Get-AzureKeyVaultSecret -vaultName "input-vault-name" -name "input-secret-name").SecretValueText 
 
@@ -60,7 +59,8 @@ foreach ($resourceGroup in $resourceGroups)
                 {
                 Write-Output "WARNING! $($certificate.Name) in $($certificate.AutomationAccountName) expires on $($certificate.ExpiryTime.Date)" 
                 $description = "WARNING! Certificate $($certificate.Name) in for Automation Account $($certificate.AutomationAccountName) expires in $certExpiresIn days on $($certificate.ExpiryTime.Date)"                      
-
+                $subject =  "WARNING: Automation Account Certificate for $($certificate.AutomationAccountName) expires in $certExpiresIn days"
+                
                 #create a session in JIRA in order to stay logged in and make changes
                 Invoke-RestMethod -uri "$URI/rest/auth/latest/session" -ContentType "application/json" -Method POST -body $auth -SessionVariable mysession
 
