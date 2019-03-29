@@ -19,3 +19,12 @@ $blobItems = (($blobContent -split ' ').Trim() | ForEach-Object { $_ }) -Join ' 
 $arrList.AddRange(@($blobItems))
 
 $arrList
+
+# PSEUDOCODE
+for ($item in $items) {
+  $arrList += "$($item.property)"
+}
+
+
+# UPLOAD NEW BLOB CONTENT (OVERWRITES CURRENT BLOB CONTENT, TO APPEND - READ CURRENT CONTENT > ADD NEW CONTENT > OVERWRITE WITH UPDATED
+$blob.ICloudBlob.UploadText($$arrList)
